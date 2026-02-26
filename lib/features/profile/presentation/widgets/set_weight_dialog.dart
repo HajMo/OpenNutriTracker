@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:horizontal_picker/horizontal_picker.dart';
 import 'package:opennutritracker/generated/l10n.dart';
@@ -5,6 +7,8 @@ import 'package:opennutritracker/generated/l10n.dart';
 class SetWeightDialog extends StatefulWidget {
   static const weightRangeKg = 50.0;
   static const weightRangeLbs = 100.0;
+  static const minWeightKg = 1.0;
+  static const minWeightLbs = 1.0;
 
   final double userWeight;
   final bool usesImperialUnits;
@@ -30,11 +34,16 @@ class _SetWeightDialogState extends State<SetWeightDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final minValue = widget.usesImperialUnits
-        ? widget.userWeight - SetWeightDialog.weightRangeLbs
-        : widget.userWeight - SetWeightDialog.weightRangeKg;
-
-    final maxValue = widget.usesImperialUnits
+    final minWeight = widget.usesImperialUnits
+        ? max(
+            SetWeightDialog.minWeightLbs,
+            widget.userWeight - SetWeightDialog.weightRangeLbs,
+          )
+        : max(
+            SetWeightDialog.minWeightKg,
+            widget.userWeight - SetWeightDialog.weightRangeKg,
+          );
+    final maxWeight = widget.usesImperialUnits
         ? widget.userWeight + SetWeightDialog.weightRangeLbs
         : widget.userWeight + SetWeightDialog.weightRangeKg;
 
@@ -47,8 +56,8 @@ class _SetWeightDialogState extends State<SetWeightDialog> {
               HorizontalPicker(
                 height: 100,
                 backgroundColor: Colors.transparent,
-                minValue: minValue < 0 ? 0 : minValue, // 👈 no negative minimum
-                maxValue: maxValue,
+                minValue: minWeight,
+                maxValue: maxWeight,
                 initialPosition: InitialPosition.center,
                 divisions: 1000,
                 suffix: widget.usesImperialUnits
@@ -56,7 +65,7 @@ class _SetWeightDialogState extends State<SetWeightDialog> {
                     : S.of(context).kgLabel,
                 onChanged: (value) {
                   setState(() {
-                    selectedWeight = value < 0 ? 0 : value; // 👈 no negative values
+                    selectedWeight = value;
                   });
                 },
               ),
@@ -73,7 +82,7 @@ class _SetWeightDialogState extends State<SetWeightDialog> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, selectedWeight);
+            Navigator.pop(context, max(minWeight, selectedWeight));
           },
           child: Text(S.of(context).dialogOKLabel),
         ),
