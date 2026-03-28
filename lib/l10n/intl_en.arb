@@ -412,5 +412,18 @@
   "paSkiingGeneral": "skiing",
   "paSkiingGeneralDesc": "general",
   "paSnowShovingModerate": "snow shoveling",
-  "paSnowShovingModerateDesc": "by hand, moderate effort"
+  "paSnowShovingModerateDesc": "by hand, moderate effort",
+
+  "@CUSTOM_MEAL_MODES": {},
+  "simpleModeLabel": "Simple",
+  "advancedModeLabel": "Advanced",
+  "totalKcalLabel": "Total kcal",
+  "totalCarbsLabel": "Total carbs (g)",
+  "totalFatLabel": "Total fat (g)",
+  "totalProteinLabel": "Total protein (g)",
+  "quickLogLabel": "Quick Log",
+  "quickLogDialogTitle": "Add meal entry",
+  "quickLogDialogContent": "Quick Log lets you log a one-off meal directly. Custom Meal saves it for reuse.",
+  "customMealLabel": "Custom Meal",
+  "quickLogAddedSnackbar": "Quick log added"
 }

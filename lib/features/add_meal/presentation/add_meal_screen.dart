@@ -296,20 +296,36 @@ class _AddMealScreenState extends State<AddMealScreen>
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text(S.of(context).createCustomDialogTitle),
-          content: Text(S.of(context).createCustomDialogContent),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(), // close dialog
-              child: Text(S.of(context).dialogCancelLabel),
+        return SimpleDialog(
+          title: Text(S.of(context).quickLogDialogTitle),
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                S.of(context).quickLogDialogContent,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
-            TextButton(
+            const SizedBox(height: 16),
+            SimpleDialogOption(
               onPressed: () {
-                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pop();
+                _openEditMealScreen(usesImperialUnits, isQuickLog: true);
+              },
+              child: ListTile(
+                leading: const Icon(Icons.bolt),
+                title: Text(S.of(context).quickLogLabel),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.of(context).pop();
                 _openEditMealScreen(usesImperialUnits);
               },
-              child: Text(S.of(context).buttonYesLabel),
+              child: ListTile(
+                leading: const Icon(Icons.restaurant_menu),
+                title: Text(S.of(context).customMealLabel),
+              ),
             ),
           ],
         );
@@ -317,8 +333,8 @@ class _AddMealScreenState extends State<AddMealScreen>
     );
   }
 
-  void _openEditMealScreen(bool usesImperialUnits) {
-    // TODO
+  void _openEditMealScreen(bool usesImperialUnits,
+      {bool isQuickLog = false}) {
     Navigator.of(context).pushNamed(
       NavigationOptions.editMealRoute,
       arguments: EditMealScreenArguments(
@@ -326,6 +342,7 @@ class _AddMealScreenState extends State<AddMealScreen>
         MealEntity.empty(),
         _mealType.getIntakeType(),
         usesImperialUnits,
+        isQuickLog: isQuickLog,
       ),
     );
   }

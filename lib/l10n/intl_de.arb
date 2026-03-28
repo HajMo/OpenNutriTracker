@@ -403,5 +403,17 @@
   "paSkiingGeneral": "Skifahren",
   "paSkiingGeneralDesc": "allgemein",
   "paSnowShovingModerate": "Schnee schaufeln",
-  "paSnowShovingModerateDesc": "manuell, mäßige Anstrengung"
+  "paSnowShovingModerateDesc": "manuell, mäßige Anstrengung",
+
+  "simpleModeLabel": "Einfach",
+  "advancedModeLabel": "Erweitert",
+  "totalKcalLabel": "Gesamt kcal",
+  "totalCarbsLabel": "Gesamt Kohlenhydrate (g)",
+  "totalFatLabel": "Gesamt Fett (g)",
+  "totalProteinLabel": "Gesamt Protein (g)",
+  "quickLogLabel": "Schnelleintrag",
+  "quickLogDialogTitle": "Mahlzeit hinzufügen",
+  "quickLogDialogContent": "Schnelleintrag protokolliert eine einmalige Mahlzeit direkt. Benutzerdefinierte Mahlzeit speichert sie zur Wiederverwendung.",
+  "customMealLabel": "Benutzerdefinierte Mahlzeit",
+  "quickLogAddedSnackbar": "Schnelleintrag hinzugefügt"
 }

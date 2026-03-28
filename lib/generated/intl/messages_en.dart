@@ -36,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activityLabel": MessageLookupByLibrary.simpleMessage("Activity"),
         "addItemLabel": MessageLookupByLibrary.simpleMessage("Add new Item:"),
         "addLabel": MessageLookupByLibrary.simpleMessage("Add"),
+        "advancedModeLabel":
+            MessageLookupByLibrary.simpleMessage("Advanced"),
         "additionalInfoLabelCompendium2011": MessageLookupByLibrary.simpleMessage(
             "Information provided\n by the \n\'2011 Compendium\n of Physical Activities\'"),
         "additionalInfoLabelCustom":
@@ -95,6 +97,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Do you want create a custom meal item?"),
         "createCustomDialogTitle":
             MessageLookupByLibrary.simpleMessage("Create custom meal item?"),
+        "customMealLabel":
+            MessageLookupByLibrary.simpleMessage("Custom Meal"),
         "dailyKcalAdjustmentLabel":
             MessageLookupByLibrary.simpleMessage("Daily Kcal adjustment:"),
         "dataCollectionLabel": MessageLookupByLibrary.simpleMessage(
@@ -596,6 +600,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("protein"),
         "quantityLabel": MessageLookupByLibrary.simpleMessage("Quantity"),
+        "quickLogAddedSnackbar":
+            MessageLookupByLibrary.simpleMessage("Quick log added"),
+        "quickLogDialogContent": MessageLookupByLibrary.simpleMessage(
+            "Quick Log lets you log a one-off meal directly. Custom Meal saves it for reuse."),
+        "quickLogDialogTitle":
+            MessageLookupByLibrary.simpleMessage("Add meal entry"),
+        "quickLogLabel":
+            MessageLookupByLibrary.simpleMessage("Quick Log"),
         "readLabel": MessageLookupByLibrary.simpleMessage(
             "I have read and accept the privacy policy."),
         "recentlyAddedLabel": MessageLookupByLibrary.simpleMessage("Recently"),
@@ -628,6 +640,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Serving size (oz/fl oz)"),
         "servingSizeLabelMetric":
             MessageLookupByLibrary.simpleMessage("Serving size (g/ml)"),
+        "simpleModeLabel":
+            MessageLookupByLibrary.simpleMessage("Simple"),
         "settingAboutLabel": MessageLookupByLibrary.simpleMessage("About"),
         "settingFeedbackLabel":
             MessageLookupByLibrary.simpleMessage("Feedback"),
@@ -665,6 +679,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackLabel": MessageLookupByLibrary.simpleMessage("Snack"),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("sugar"),
         "suppliedLabel": MessageLookupByLibrary.simpleMessage("supplied"),
+        "totalCarbsLabel":
+            MessageLookupByLibrary.simpleMessage("Total carbs (g)"),
+        "totalFatLabel":
+            MessageLookupByLibrary.simpleMessage("Total fat (g)"),
+        "totalKcalLabel":
+            MessageLookupByLibrary.simpleMessage("Total kcal"),
+        "totalProteinLabel":
+            MessageLookupByLibrary.simpleMessage("Total protein (g)"),
         "unitLabel": MessageLookupByLibrary.simpleMessage("Unit"),
         "weightLabel": MessageLookupByLibrary.simpleMessage("Weight"),
         "yearsLabel": m3

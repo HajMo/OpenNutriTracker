@@ -4160,6 +4160,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Simple`
+  String get simpleModeLabel {
+    return Intl.message(
+      'Simple',
+      name: 'simpleModeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advanced`
+  String get advancedModeLabel {
+    return Intl.message(
+      'Advanced',
+      name: 'advancedModeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total kcal`
+  String get totalKcalLabel {
+    return Intl.message(
+      'Total kcal',
+      name: 'totalKcalLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total carbs (g)`
+  String get totalCarbsLabel {
+    return Intl.message(
+      'Total carbs (g)',
+      name: 'totalCarbsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total fat (g)`
+  String get totalFatLabel {
+    return Intl.message(
+      'Total fat (g)',
+      name: 'totalFatLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total protein (g)`
+  String get totalProteinLabel {
+    return Intl.message(
+      'Total protein (g)',
+      name: 'totalProteinLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Log`
+  String get quickLogLabel {
+    return Intl.message(
+      'Quick Log',
+      name: 'quickLogLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add meal entry`
+  String get quickLogDialogTitle {
+    return Intl.message(
+      'Add meal entry',
+      name: 'quickLogDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Log lets you log a one-off meal directly. Custom Meal saves it for reuse.`
+  String get quickLogDialogContent {
+    return Intl.message(
+      'Quick Log lets you log a one-off meal directly. Custom Meal saves it for reuse.',
+      name: 'quickLogDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Custom Meal`
+  String get customMealLabel {
+    return Intl.message(
+      'Custom Meal',
+      name: 'customMealLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick log added`
+  String get quickLogAddedSnackbar {
+    return Intl.message(
+      'Quick log added',
+      name: 'quickLogAddedSnackbar',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

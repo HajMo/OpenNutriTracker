@@ -408,5 +408,17 @@
   "paSkiingGeneral": "kayak",
   "paSkiingGeneralDesc": "genel",
   "paSnowShovingModerate": "kar küreme",
-  "paSnowShovingModerateDesc": "elle, orta derecede çaba"
+  "paSnowShovingModerateDesc": "elle, orta derecede çaba",
+
+  "simpleModeLabel": "Basit",
+  "advancedModeLabel": "Gelişmiş",
+  "totalKcalLabel": "Toplam kcal",
+  "totalCarbsLabel": "Toplam karbonhidrat (g)",
+  "totalFatLabel": "Toplam yağ (g)",
+  "totalProteinLabel": "Toplam protein (g)",
+  "quickLogLabel": "Hızlı Kayıt",
+  "quickLogDialogTitle": "Yemek girişi ekle",
+  "quickLogDialogContent": "Hızlı Kayıt tek seferlik bir yemeği doğrudan kaydeder. Özel Yemek tekrar kullanım için saklar.",
+  "customMealLabel": "Özel Yemek",
+  "quickLogAddedSnackbar": "Hızlı kayıt eklendi"
 }
