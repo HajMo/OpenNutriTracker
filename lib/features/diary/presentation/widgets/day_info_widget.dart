@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
+import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/activity_vertial_list.dart';
@@ -246,7 +247,16 @@ class DayInfoWidget extends StatelessWidget {
   }
 
   void showCopyDialog(BuildContext context, IntakeEntity intakeEntity) async {
-    const copyDialog = CopyDialog();
+    final defaultMealType = switch (intakeEntity.type) {
+      IntakeTypeEntity.breakfast => AddMealType.breakfastType,
+      IntakeTypeEntity.lunch => AddMealType.lunchType,
+      IntakeTypeEntity.dinner => AddMealType.dinnerType,
+      IntakeTypeEntity.snack => AddMealType.snackType,
+    };
+
+    final copyDialog = CopyDialog(
+      initialValue: defaultMealType,
+    );
     final selectedMealType = await showDialog<AddMealType>(
       context: context,
       builder: (context) => copyDialog,
