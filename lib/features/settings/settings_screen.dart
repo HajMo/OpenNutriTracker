@@ -6,6 +6,7 @@ import 'package:opennutritracker/core/presentation/widgets/disclaimer_dialog.dar
 import 'package:opennutritracker/core/utils/app_const.dart';
 import 'package:opennutritracker/core/data/data_source/config_data_source.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
+import 'package:opennutritracker/core/utils/notification_service.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
 import 'package:opennutritracker/core/utils/url_const.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
@@ -216,12 +217,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 (time) => setDialogState(() => dinnerTime = time),
               ),
               const SizedBox(height: 8),
-              Text(
-                "Notifications require the app to be set up with flutter_local_notifications.",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
             ],
           ),
           actions: [
@@ -236,7 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     'breakfast', _formatTime(breakfastTime));
                 configDs.setMealReminderTime('lunch', _formatTime(lunchTime));
                 configDs.setMealReminderTime('dinner', _formatTime(dinnerTime));
-                // TODO: Schedule actual notifications via flutter_local_notifications
+                _scheduleReminders(breakfastTime, lunchTime, dinnerTime);
                 Navigator.pop(context);
               },
               child: Text(S.of(context).dialogOKLabel),
@@ -298,6 +293,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String? _formatTime(TimeOfDay? time) {
     if (time == null) return null;
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _scheduleReminders(
+    TimeOfDay? breakfast,
+    TimeOfDay? lunch,
+    TimeOfDay? dinner,
+  ) async {
+    await NotificationService.cancelAllReminders();
+    if (breakfast != null) {
+      await NotificationService.scheduleDailyReminder(
+        id: NotificationService.breakfastReminderId,
+        title: "Breakfast",
+        body: "Don't forget to log your breakfast!",
+        hour: breakfast.hour,
+        minute: breakfast.minute,
+      );
+    }
+    if (lunch != null) {
+      await NotificationService.scheduleDailyReminder(
+        id: NotificationService.lunchReminderId,
+        title: "Lunch",
+        body: "Don't forget to log your lunch!",
+        hour: lunch.hour,
+        minute: lunch.minute,
+      );
+    }
+    if (dinner != null) {
+      await NotificationService.scheduleDailyReminder(
+        id: NotificationService.dinnerReminderId,
+        title: "Dinner",
+        body: "Don't forget to log your dinner!",
+        hour: dinner.hour,
+        minute: dinner.minute,
+      );
+    }
   }
 
   void _showCalculationsDialog(BuildContext context) {
