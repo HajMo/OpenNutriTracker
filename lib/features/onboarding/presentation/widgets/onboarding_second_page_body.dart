@@ -21,11 +21,20 @@ class OnboardingSecondPageBody extends StatefulWidget {
 class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
   final _heightFormKey = GlobalKey<FormState>();
   final _weightFormKey = GlobalKey<FormState>();
+  final _heightFocusNode = FocusNode();
+  final _weightFocusNode = FocusNode();
   final _isUnitSelected = [true, false];
   double? _parsedHeight;
   double? _parsedWeight;
 
   bool get _isImperialSelected => _isUnitSelected[1];
+
+  @override
+  void dispose() {
+    _heightFocusNode.dispose();
+    _weightFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +56,7 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
           Form(
             key: _heightFormKey,
             child: TextFormField(
+              focusNode: _heightFocusNode,
               onChanged: (text) {
                 if (_heightFormKey.currentState!.validate()) {
                   _parsedHeight = double.tryParse(text.replaceAll(',', '.'));
@@ -55,6 +65,9 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
                   _parsedHeight = null;
                   checkCorrectInput();
                 }
+              },
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(_weightFocusNode);
               },
               validator: validateHeight,
               decoration: InputDecoration(
@@ -67,7 +80,8 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              textInputAction: TextInputAction.next,
               inputFormatters: [
                 !_isImperialSelected
                     ? FilteringTextInputFormatter.digitsOnly
@@ -117,6 +131,7 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
           Form(
             key: _weightFormKey,
             child: TextFormField(
+              focusNode: _weightFocusNode,
               onChanged: (text) {
                 if (_weightFormKey.currentState!.validate()) {
                   _parsedWeight = double.tryParse(text);
@@ -124,6 +139,9 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
                 } else {
                   checkCorrectInput();
                 }
+              },
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).unfocus();
               },
               validator: validateWeight,
               decoration: InputDecoration(
@@ -139,6 +157,7 @@ class _OnboardingSecondPageBodyState extends State<OnboardingSecondPageBody> {
                 ),
               ),
               keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
           ),
