@@ -37,16 +37,19 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   @override
   Widget build(BuildContext context) {
-    double kcalLeftLabel = 0;
+    double kcalValue = 0;
     double gaugeValue = 0;
+    String kcalLabelText = S.of(context).kcalLeftLabel;
+
     if (widget.totalKcalLeft > widget.totalKcalDaily) {
-      kcalLeftLabel = widget.totalKcalDaily;
+      kcalValue = widget.totalKcalDaily;
       gaugeValue = 0;
     } else if (widget.totalKcalLeft < 0) {
-      kcalLeftLabel = 0;
+      kcalValue = widget.totalKcalLeft.abs();
       gaugeValue = 1;
+      kcalLabelText = S.of(context).kcalTooMuchLabel;
     } else {
-      kcalLeftLabel = widget.totalKcalLeft;
+      kcalValue = widget.totalKcalLeft;
       gaugeValue = (widget.totalKcalDaily - widget.totalKcalLeft) /
           widget.totalKcalDaily;
     }
@@ -98,7 +101,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       children: [
                         AnimatedFlipCounter(
                           duration: const Duration(milliseconds: 1000),
-                          value: kcalLeftLabel.toInt(),
+                          value: kcalValue.toInt(),
                           textStyle: Theme.of(
                             context,
                           ).textTheme.headlineMedium?.copyWith(
@@ -107,7 +110,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               ),
                         ),
                         Text(
-                          S.of(context).kcalLeftLabel,
+                          kcalLabelText,
                           style: Theme.of(
                             context,
                           ).textTheme.titleMedium?.copyWith(

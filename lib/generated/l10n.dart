@@ -1171,6 +1171,16 @@ class S {
     );
   }
 
+  /// `kcal too much`
+  String get kcalTooMuchLabel {
+    return Intl.message(
+      'kcal too much',
+      name: 'kcalTooMuchLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Nutrition Information`
   String get nutritionInfoLabel {
     return Intl.message(

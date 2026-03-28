@@ -108,6 +108,7 @@
   "suppliedLabel": "zugeführt",
   "burnedLabel": "verbrannt",
   "kcalLeftLabel": "kcal übrig",
+  "kcalTooMuchLabel": "kcal zu viel",
   "nutritionInfoLabel": "Nährwertangaben",
   "kcalLabel": "kcal",
   "carbsLabel": "Kohlenhydrate",
