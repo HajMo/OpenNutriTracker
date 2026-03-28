@@ -9,7 +9,7 @@ services:
       watch:
         - action: sync
           path: ./lib
-          target: /app/lib
+          target: /home/flutteruser/app/lib
         - action: rebuild
           path: ./pubspec.yaml
         - action: rebuild
