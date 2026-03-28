@@ -1,7 +1,16 @@
 services:
-  web:
+  dev:
     build: .
     ports:
       - "8080:8080"
     env_file:
       - .env
+    develop:
+      watch:
+        - action: sync
+          path: ./lib
+          target: /app/lib
+        - action: rebuild
+          path: ./pubspec.yaml
+        - action: rebuild
+          path: ./pubspec.lock
