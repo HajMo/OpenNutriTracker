@@ -4,6 +4,7 @@ import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/app_banner_version.dart';
 import 'package:opennutritracker/core/presentation/widgets/disclaimer_dialog.dart';
 import 'package:opennutritracker/core/utils/app_const.dart';
+import 'package:opennutritracker/core/data/data_source/config_data_source.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
 import 'package:opennutritracker/core/utils/url_const.dart';
@@ -69,6 +70,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Icons.calculate_outlined),
                   title: Text(S.of(context).settingsCalculationsLabel),
                   onTap: () => _showCalculationsDialog(context),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.notifications_outlined),
+                  title: const Text("Meal Reminders"),
+                  subtitle: const Text("Get reminded to log your meals"),
+                  onTap: () => _showRemindersDialog(context),
                 ),
                 ListTile(
                   leading: const Icon(Icons.brightness_medium_outlined),
@@ -172,6 +179,125 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _homeBloc.add(LoadItemsEvent());
       _diaryBloc.add(const LoadDiaryYearEvent());
     }
+  }
+
+  void _showRemindersDialog(BuildContext context) async {
+    final config = await _settingsBloc.getConfig();
+    if (!context.mounted) return;
+
+    TimeOfDay? breakfastTime = _parseTime(config.breakfastReminderTime);
+    TimeOfDay? lunchTime = _parseTime(config.lunchReminderTime);
+    TimeOfDay? dinnerTime = _parseTime(config.dinnerReminderTime);
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text("Meal Reminders"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildReminderTile(
+                context,
+                "Breakfast",
+                breakfastTime,
+                (time) => setDialogState(() => breakfastTime = time),
+              ),
+              _buildReminderTile(
+                context,
+                "Lunch",
+                lunchTime,
+                (time) => setDialogState(() => lunchTime = time),
+              ),
+              _buildReminderTile(
+                context,
+                "Dinner",
+                dinnerTime,
+                (time) => setDialogState(() => dinnerTime = time),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Notifications require the app to be set up with flutter_local_notifications.",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(S.of(context).dialogCancelLabel),
+            ),
+            FilledButton(
+              onPressed: () {
+                final configDs = locator<ConfigDataSource>();
+                configDs.setMealReminderTime(
+                    'breakfast', _formatTime(breakfastTime));
+                configDs.setMealReminderTime('lunch', _formatTime(lunchTime));
+                configDs.setMealReminderTime('dinner', _formatTime(dinnerTime));
+                // TODO: Schedule actual notifications via flutter_local_notifications
+                Navigator.pop(context);
+              },
+              child: Text(S.of(context).dialogOKLabel),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildReminderTile(
+    BuildContext context,
+    String label,
+    TimeOfDay? time,
+    ValueChanged<TimeOfDay?> onChanged,
+  ) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(label),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextButton(
+            onPressed: () async {
+              final picked = await showTimePicker(
+                context: context,
+                initialTime: time ?? const TimeOfDay(hour: 8, minute: 0),
+              );
+              if (picked != null) onChanged(picked);
+            },
+            child: Text(
+              time != null ? time!.format(context) : "Not set",
+              style: TextStyle(
+                color: time != null
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          if (time != null)
+            IconButton(
+              icon: const Icon(Icons.clear, size: 18),
+              onPressed: () => onChanged(null),
+            ),
+        ],
+      ),
+    );
+  }
+
+  TimeOfDay? _parseTime(String? time) {
+    if (time == null) return null;
+    final parts = time.split(':');
+    if (parts.length != 2) return null;
+    return TimeOfDay(
+        hour: int.tryParse(parts[0]) ?? 0,
+        minute: int.tryParse(parts[1]) ?? 0);
+  }
+
+  String? _formatTime(TimeOfDay? time) {
+    if (time == null) return null;
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   void _showCalculationsDialog(BuildContext context) {

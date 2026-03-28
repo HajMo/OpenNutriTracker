@@ -28,6 +28,12 @@ class ConfigDBO extends HiveObject {
   double? userFatGoalPct;
   @HiveField(9)
   double? waterGoalMl;
+  @HiveField(10)
+  String? breakfastReminderTime;
+  @HiveField(11)
+  String? lunchReminderTime;
+  @HiveField(12)
+  String? dinnerReminderTime;
 
   ConfigDBO(
     this.hasAcceptedDisclaimer,

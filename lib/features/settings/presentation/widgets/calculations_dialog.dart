@@ -141,99 +141,29 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             S.of(context).macroDistributionLabel,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 32),
-          _buildMacroSlider(
+          const SizedBox(height: 16),
+          _buildMacroField(
             S.of(context).carbsLabel,
             _carbsPctSelection,
             Colors.orange,
-            (value) {
-              setState(() {
-                double delta = value - _carbsPctSelection;
-                _carbsPctSelection = value;
-
-                // Adjust other percentages proportionally
-                double proteinRatio = _proteinPctSelection /
-                    (_proteinPctSelection + _fatPctSelection);
-                double fatRatio = _fatPctSelection /
-                    (_proteinPctSelection + _fatPctSelection);
-
-                _proteinPctSelection -= delta * proteinRatio;
-                _fatPctSelection -= delta * fatRatio;
-
-                // Ensure no value goes below 5%
-                if (_proteinPctSelection < 5) {
-                  double overflow = 5 - _proteinPctSelection;
-                  _proteinPctSelection = 5;
-                  _fatPctSelection -= overflow;
-                }
-                if (_fatPctSelection < 5) {
-                  double overflow = 5 - _fatPctSelection;
-                  _fatPctSelection = 5;
-                  _proteinPctSelection -= overflow;
-                }
-              });
-            },
+            (value) => setState(() => _carbsPctSelection = value),
           ),
-          _buildMacroSlider(
-            S.of(context).proteinLabel,
-            _proteinPctSelection,
-            Colors.blue,
-            (value) {
-              setState(() {
-                double delta = value - _proteinPctSelection;
-                _proteinPctSelection = value;
-
-                double carbsRatio = _carbsPctSelection /
-                    (_carbsPctSelection + _fatPctSelection);
-                double fatRatio =
-                    _fatPctSelection / (_carbsPctSelection + _fatPctSelection);
-
-                _carbsPctSelection -= delta * carbsRatio;
-                _fatPctSelection -= delta * fatRatio;
-
-                if (_carbsPctSelection < 5) {
-                  double overflow = 5 - _carbsPctSelection;
-                  _carbsPctSelection = 5;
-                  _fatPctSelection -= overflow;
-                }
-                if (_fatPctSelection < 5) {
-                  double overflow = 5 - _fatPctSelection;
-                  _fatPctSelection = 5;
-                  _carbsPctSelection -= overflow;
-                }
-              });
-            },
-          ),
-          _buildMacroSlider(
+          const SizedBox(height: 8),
+          _buildMacroField(
             S.of(context).fatLabel,
             _fatPctSelection,
             Colors.green,
-            (value) {
-              setState(() {
-                double delta = value - _fatPctSelection;
-                _fatPctSelection = value;
-
-                double carbsRatio = _carbsPctSelection /
-                    (_carbsPctSelection + _proteinPctSelection);
-                double proteinRatio = _proteinPctSelection /
-                    (_carbsPctSelection + _proteinPctSelection);
-
-                _carbsPctSelection -= delta * carbsRatio;
-                _proteinPctSelection -= delta * proteinRatio;
-
-                if (_carbsPctSelection < 5) {
-                  double overflow = 5 - _carbsPctSelection;
-                  _carbsPctSelection = 5;
-                  _proteinPctSelection -= overflow;
-                }
-                if (_proteinPctSelection < 5) {
-                  double overflow = 5 - _proteinPctSelection;
-                  _proteinPctSelection = 5;
-                  _carbsPctSelection -= overflow;
-                }
-              });
-            },
+            (value) => setState(() => _fatPctSelection = value),
           ),
+          const SizedBox(height: 8),
+          _buildMacroField(
+            S.of(context).proteinLabel,
+            _proteinPctSelection,
+            Colors.blue,
+            (value) => setState(() => _proteinPctSelection = value),
+          ),
+          const SizedBox(height: 8),
+          _buildMacroSumIndicator(),
         ],
       ),
       actions: [
@@ -253,90 +183,82 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
     );
   }
 
-  Widget _buildMacroSlider(
+  double get _macroSum =>
+      _carbsPctSelection + _proteinPctSelection + _fatPctSelection;
+
+  bool get _macroSumValid => _macroSum.round() == 100;
+
+  Widget _buildMacroField(
     String label,
     double value,
     Color color,
     ValueChanged<double> onChanged,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(label), Text('${value.round()}%')],
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
+        const SizedBox(width: 8),
+        Expanded(child: Text(label)),
         SizedBox(
-          width: 280,
-          child: SliderTheme(
-            data: SliderThemeData(
-              activeTrackColor: color,
-              thumbColor: color,
-              inactiveTrackColor: color.withValues(alpha: 0.2),
+          width: 70,
+          child: TextFormField(
+            initialValue: value.round().toString(),
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            decoration: const InputDecoration(
+              suffixText: "%",
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              border: OutlineInputBorder(),
             ),
-            child: Slider(
-              min: 5,
-              max: 90,
-              value: value,
-              divisions: 85,
-              onChanged: (value) {
-                final newValue = value.round().toDouble();
-                if (100 - newValue >= 10) {
-                  onChanged(newValue);
-                  _normalizeMacros();
-                }
-              },
-            ),
+            onChanged: (text) {
+              final parsed = double.tryParse(text);
+              if (parsed != null && parsed >= 0 && parsed <= 100) {
+                onChanged(parsed);
+              }
+            },
           ),
         ),
       ],
     );
   }
 
-  void _normalizeMacros() {
-    setState(() {
-      // First, ensure all values are rounded
-      _carbsPctSelection = _carbsPctSelection.roundToDouble();
-      _proteinPctSelection = _proteinPctSelection.roundToDouble();
-      _fatPctSelection = _fatPctSelection.roundToDouble();
-
-      // Calculate total
-      double total =
-          _carbsPctSelection + _proteinPctSelection + _fatPctSelection;
-
-      // If total isn't 100, adjust values proportionally
-      if (total != 100) {
-        // Calculate adjustment factor
-        double factor = 100 / total;
-
-        // Adjust the first two values
-        _carbsPctSelection = (_carbsPctSelection * factor).roundToDouble();
-        _proteinPctSelection = (_proteinPctSelection * factor).roundToDouble();
-
-        // Set the last value to make total exactly 100
-        _fatPctSelection = 100 - _carbsPctSelection - _proteinPctSelection;
-
-        // Ensure minimum values (5%)
-        if (_fatPctSelection < 5) {
-          _fatPctSelection = 5;
-          // Distribute remaining 95% proportionally between carbs and protein
-          double remaining = 95;
-          double ratio =
-              _carbsPctSelection / (_carbsPctSelection + _proteinPctSelection);
-          _carbsPctSelection = (remaining * ratio).roundToDouble();
-          _proteinPctSelection = remaining - _carbsPctSelection;
-        }
-      }
-
-      // Verify final values
-      assert(
-        _carbsPctSelection + _proteinPctSelection + _fatPctSelection == 100,
-        'Macros must total 100%',
-      );
-    });
+  Widget _buildMacroSumIndicator() {
+    final sum = _macroSum.round();
+    final isValid = sum == 100;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Icon(
+          isValid ? Icons.check_circle : Icons.warning,
+          size: 16,
+          color: isValid ? Colors.green : Theme.of(context).colorScheme.error,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          "Total: $sum%",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: isValid
+                    ? Colors.green
+                    : Theme.of(context).colorScheme.error,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ],
+    );
   }
 
   void _saveCalculationSettings() {
+    if (!_macroSumValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Macro percentages must total 100%")),
+      );
+      return;
+    }
     // Save the calorie offset as full number
     widget.settingsBloc.setKcalAdjustment(
       _kcalAdjustmentSelection.toInt().toDouble(),

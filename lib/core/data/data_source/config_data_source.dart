@@ -113,4 +113,20 @@ class ConfigDataSource {
     config?.waterGoalMl = waterGoalMl;
     config?.save();
   }
+
+  Future<void> setMealReminderTime(
+      String meal, String? time) async {
+    _log.fine('Setting $meal reminder to $time');
+    final config = _configBox.get(_configKey);
+    if (config == null) return;
+    switch (meal) {
+      case 'breakfast':
+        config.breakfastReminderTime = time;
+      case 'lunch':
+        config.lunchReminderTime = time;
+      case 'dinner':
+        config.dinnerReminderTime = time;
+    }
+    config.save();
+  }
 }

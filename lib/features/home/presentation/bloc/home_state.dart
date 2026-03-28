@@ -34,6 +34,7 @@ class HomeLoadedState extends HomeState {
   final bool usesImperialUnits;
   final double waterIntakeMl;
   final double waterGoalMl;
+  final double userWeightKg;
 
   const HomeLoadedState({
     required this.showDisclaimerDialog,
@@ -55,6 +56,7 @@ class HomeLoadedState extends HomeState {
     required this.usesImperialUnits,
     required this.waterIntakeMl,
     required this.waterGoalMl,
+    required this.userWeightKg,
   });
 
   @override

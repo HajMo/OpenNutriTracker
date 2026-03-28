@@ -12,6 +12,7 @@ import 'package:opennutritracker/core/domain/usecase/get_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_user_activity_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/update_intake_usecase.dart';
 import 'package:opennutritracker/core/data/repository/tracked_day_repository.dart';
 import 'package:opennutritracker/core/data/repository/config_repository.dart';
@@ -38,6 +39,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetMacroGoalUsecase _getMacroGoalUsecase;
   final TrackedDayRepository _trackedDayRepository;
   final ConfigRepository _configRepository;
+  final GetUserUsecase _getUserUsecase;
 
   DateTime currentDay = DateTime.now();
 
@@ -54,6 +56,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._getMacroGoalUsecase,
     this._trackedDayRepository,
     this._configRepository,
+    this._getUserUsecase,
   ) : super(HomeInitial()) {
     on<LoadItemsEvent>((event, emit) async {
       emit(HomeLoadingState());
@@ -129,6 +132,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final waterIntake =
           await _trackedDayRepository.getWaterIntake(currentDay);
       final waterGoal = await _configRepository.getWaterGoalMl();
+      final user = await _getUserUsecase.getUserData();
 
       emit(
         HomeLoadedState(
@@ -151,6 +155,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           usesImperialUnits: usesImperialUnits,
           waterIntakeMl: waterIntake,
           waterGoalMl: waterGoal,
+          userWeightKg: user.weightKG,
         ),
       );
     });

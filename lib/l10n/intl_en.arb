@@ -435,5 +435,13 @@
   "waterAmountLabel": "Amount (ml)",
   "waterGlassLabel": "+250 ml",
   "waterCustomLabel": "Custom",
-  "waterGoalLabel": "Daily water goal (ml)"
+  "waterGoalLabel": "Daily water goal (ml)",
+
+  "@REMINDERS": {},
+  "remindersLabel": "Meal Reminders",
+  "remindersDescription": "Get reminded to log your meals",
+  "reminderBreakfastLabel": "Breakfast reminder",
+  "reminderLunchLabel": "Lunch reminder",
+  "reminderDinnerLabel": "Dinner reminder",
+  "reminderTimeLabel": "Reminder time"
 }

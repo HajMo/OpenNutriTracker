@@ -82,13 +82,35 @@ class IntakeCard extends StatelessWidget {
                       ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(
-                      '${intake.totalKcal.toInt()} kcal',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onTertiaryContainer,
-                          ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${intake.totalKcal.toInt()} kcal',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
+                              ),
+                        ),
+                        Text(
+                          'C${intake.totalCarbsGram.toInt()} F${intake.totalFatsGram.toInt()} P${intake.totalProteinsGram.toInt()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer
+                                    .withValues(alpha: 0.8),
+                                fontSize: 9,
+                              ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(

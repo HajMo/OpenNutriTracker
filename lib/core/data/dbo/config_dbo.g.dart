@@ -27,13 +27,16 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       ..userCarbGoalPct = fields[6] as double?
       ..userProteinGoalPct = fields[7] as double?
       ..userFatGoalPct = fields[8] as double?
-      ..waterGoalMl = fields[9] as double?;
+      ..waterGoalMl = fields[9] as double?
+      ..breakfastReminderTime = fields[10] as String?
+      ..lunchReminderTime = fields[11] as String?
+      ..dinnerReminderTime = fields[12] as String?;
   }
 
   @override
   void write(BinaryWriter writer, ConfigDBO obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.hasAcceptedDisclaimer)
       ..writeByte(1)
@@ -53,7 +56,13 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       ..writeByte(8)
       ..write(obj.userFatGoalPct)
       ..writeByte(9)
-      ..write(obj.waterGoalMl);
+      ..write(obj.waterGoalMl)
+      ..writeByte(10)
+      ..write(obj.breakfastReminderTime)
+      ..writeByte(11)
+      ..write(obj.lunchReminderTime)
+      ..writeByte(12)
+      ..write(obj.dinnerReminderTime);
   }
 
   @override

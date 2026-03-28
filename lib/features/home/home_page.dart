@@ -14,7 +14,11 @@ import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.da
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/dashboard_widget.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/intake_vertical_list.dart';
+import 'package:opennutritracker/features/home/presentation/widgets/quick_weight_widget.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/water_tracking_widget.dart';
+import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:opennutritracker/features/profile/presentation/widgets/set_weight_dialog.dart';
+import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class HomePage extends StatefulWidget {
@@ -75,6 +79,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             state.usesImperialUnits,
             state.waterIntakeMl,
             state.waterGoalMl,
+            state.userWeightKg,
           );
         } else {
           return _getLoadingContent();
@@ -117,6 +122,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     bool usesImperialUnits,
     double waterIntakeMl,
     double waterGoalMl,
+    double userWeightKg,
   ) {
     if (showDisclaimerDialog) {
       _showDisclaimerDialog(context);
@@ -136,6 +142,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               totalCarbsGoal: totalCarbsGoal,
               totalFatsGoal: totalFatsGoal,
               totalProteinsGoal: totalProteinsGoal,
+            ),
+            QuickWeightWidget(
+              weightKg: userWeightKg,
+              usesImperialUnits: usesImperialUnits,
+              onTap: () => _showWeightUpdateDialog(context, usesImperialUnits,
+                  userWeightKg),
             ),
             WaterTrackingWidget(
               waterIntakeMl: waterIntakeMl,
@@ -340,6 +352,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _homeBloc.add(const LoadItemsEvent());
       }
     });
+  }
+
+  void _showWeightUpdateDialog(
+      BuildContext context, bool usesImperialUnits, double currentWeightKg) async {
+    final newWeight = await showDialog<double>(
+      context: context,
+      builder: (context) => SetWeightDialog(
+        userWeight: currentWeightKg,
+        usesImperialUnits: usesImperialUnits,
+      ),
+    );
+    if (newWeight != null) {
+      final user = await locator<GetUserUsecase>().getUserData();
+      user.weightKG = newWeight;
+      locator<ProfileBloc>().updateUser(user);
+    }
   }
 
   void _showCustomWaterDialog(BuildContext context) {

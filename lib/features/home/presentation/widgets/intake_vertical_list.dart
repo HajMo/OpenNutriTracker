@@ -73,6 +73,16 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
     );
   }
 
+  String get macroSummary {
+    final c = widget.intakeList.fold<double>(
+        0, (sum, e) => sum + e.totalCarbsGram);
+    final f = widget.intakeList.fold<double>(
+        0, (sum, e) => sum + e.totalFatsGram);
+    final p = widget.intakeList.fold<double>(
+        0, (sum, e) => sum + e.totalProteinsGram);
+    return 'C${c.toInt()}g  F${f.toInt()}g  P${p.toInt()}g';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -96,13 +106,28 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
               ),
               const Spacer(),
               if (totalKcal > 0) ...[
-                Text(
-                  '${totalKcal.toInt()} ${S.of(context).kcalLabel}',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${totalKcal.toInt()} ${S.of(context).kcalLabel}',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.7),
+                          ),
+                    ),
+                    Text(
+                      macroSummary,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.5),
+                          ),
+                    ),
+                  ],
                 ),
                 PopupMenuButton<VerticalListPopupMenuSelections>(
                   onSelected: (
