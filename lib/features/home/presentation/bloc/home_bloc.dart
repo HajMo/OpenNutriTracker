@@ -13,6 +13,8 @@ import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart'
 import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_user_activity_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/update_intake_usecase.dart';
+import 'package:opennutritracker/core/data/repository/tracked_day_repository.dart';
+import 'package:opennutritracker/core/data/repository/config_repository.dart';
 import 'package:opennutritracker/core/utils/calc/calorie_goal_calc.dart';
 import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
@@ -34,6 +36,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AddTrackedDayUsecase _addTrackedDayUseCase;
   final GetKcalGoalUsecase _getKcalGoalUsecase;
   final GetMacroGoalUsecase _getMacroGoalUsecase;
+  final TrackedDayRepository _trackedDayRepository;
+  final ConfigRepository _configRepository;
 
   DateTime currentDay = DateTime.now();
 
@@ -48,6 +52,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._addTrackedDayUseCase,
     this._getKcalGoalUsecase,
     this._getMacroGoalUsecase,
+    this._trackedDayRepository,
+    this._configRepository,
   ) : super(HomeInitial()) {
     on<LoadItemsEvent>((event, emit) async {
       emit(HomeLoadingState());
@@ -120,6 +126,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         totalKcalIntake,
       );
 
+      final waterIntake =
+          await _trackedDayRepository.getWaterIntake(currentDay);
+      final waterGoal = await _configRepository.getWaterGoalMl();
+
       emit(
         HomeLoadedState(
           showDisclaimerDialog: showDisclaimerDialog,
@@ -139,6 +149,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           snackIntakeList: snackIntakeList,
           userActivityList: userActivities,
           usesImperialUnits: usesImperialUnits,
+          waterIntakeMl: waterIntake,
+          waterGoalMl: waterGoal,
         ),
       );
     });
@@ -155,6 +167,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   double getTotalProteins(List<IntakeEntity> intakeList) =>
       intakeList.map((intake) => intake.totalProteinsGram).toList().sum;
+
+  Future<void> addWaterIntake(double amountMl) async {
+    await _trackedDayRepository.addWaterIntake(currentDay, amountMl);
+    add(const LoadItemsEvent());
+  }
 
   void saveConfigData(bool acceptedDisclaimer) async {
     _addConfigUsecase.setConfigDisclaimer(acceptedDisclaimer);

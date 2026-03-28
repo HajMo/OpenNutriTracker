@@ -165,4 +165,20 @@ class TrackedDayRepository {
       proteinAmount: proteinTracked,
     );
   }
+
+  Future<void> addWaterIntake(DateTime day, double amountMl) async {
+    await _trackedDayDataSource.addWaterIntake(day, amountMl);
+  }
+
+  Future<void> setWaterGoal(DateTime day, double goalMl) async {
+    await _trackedDayDataSource.setWaterGoal(day, goalMl);
+  }
+
+  Future<double> getWaterIntake(DateTime day) async {
+    return await _trackedDayDataSource.getWaterIntake(day);
+  }
+
+  Future<double> getWaterGoal(DateTime day) async {
+    return await _trackedDayDataSource.getWaterGoal(day);
+  }
 }

@@ -26,13 +26,14 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
     )
       ..userCarbGoalPct = fields[6] as double?
       ..userProteinGoalPct = fields[7] as double?
-      ..userFatGoalPct = fields[8] as double?;
+      ..userFatGoalPct = fields[8] as double?
+      ..waterGoalMl = fields[9] as double?;
   }
 
   @override
   void write(BinaryWriter writer, ConfigDBO obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.hasAcceptedDisclaimer)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class ConfigDBOAdapter extends TypeAdapter<ConfigDBO> {
       ..writeByte(7)
       ..write(obj.userProteinGoalPct)
       ..writeByte(8)
-      ..write(obj.userFatGoalPct);
+      ..write(obj.userFatGoalPct)
+      ..writeByte(9)
+      ..write(obj.waterGoalMl);
   }
 
   @override
@@ -78,7 +81,8 @@ ConfigDBO _$ConfigDBOFromJson(Map<String, dynamic> json) => ConfigDBO(
     )
       ..userCarbGoalPct = (json['userCarbGoalPct'] as num?)?.toDouble()
       ..userProteinGoalPct = (json['userProteinGoalPct'] as num?)?.toDouble()
-      ..userFatGoalPct = (json['userFatGoalPct'] as num?)?.toDouble();
+      ..userFatGoalPct = (json['userFatGoalPct'] as num?)?.toDouble()
+      ..waterGoalMl = (json['waterGoalMl'] as num?)?.toDouble();
 
 Map<String, dynamic> _$ConfigDBOToJson(ConfigDBO instance) => <String, dynamic>{
       'hasAcceptedDisclaimer': instance.hasAcceptedDisclaimer,
@@ -90,6 +94,7 @@ Map<String, dynamic> _$ConfigDBOToJson(ConfigDBO instance) => <String, dynamic>{
       'userCarbGoalPct': instance.userCarbGoalPct,
       'userProteinGoalPct': instance.userProteinGoalPct,
       'userFatGoalPct': instance.userFatGoalPct,
+      'waterGoalMl': instance.waterGoalMl,
     };
 
 const _$AppThemeDBOEnumMap = {

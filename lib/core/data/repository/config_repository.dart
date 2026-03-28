@@ -66,4 +66,12 @@ class ConfigRepository {
     _configDataSource.setConfigProteinGoalPct(protein);
     _configDataSource.setConfigFatGoalPct(fat);
   }
+
+  Future<double> getWaterGoalMl() async {
+    return await _configDataSource.getWaterGoalMl();
+  }
+
+  Future<void> setWaterGoalMl(double waterGoalMl) async {
+    _configDataSource.setConfigWaterGoalMl(waterGoalMl);
+  }
 }

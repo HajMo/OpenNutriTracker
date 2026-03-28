@@ -22,12 +22,14 @@ class HiveDBProvider extends ChangeNotifier {
   static const userActivityBoxName = 'UserActivityBox';
   static const userBoxName = 'UserBox';
   static const trackedDayBoxName = 'TrackedDayBox';
+  static const weightHistoryBoxName = 'WeightHistoryBox';
 
   late Box<ConfigDBO> configBox;
   late Box<IntakeDBO> intakeBox;
   late Box<UserActivityDBO> userActivityBox;
   late Box<UserDBO> userBox;
   late Box<TrackedDayDBO> trackedDayBox;
+  late Box<dynamic> weightHistoryBox;
 
   Future<void> initHiveDB(Uint8List encryptionKey) async {
     final encryptionCypher = HiveAesCipher(encryptionKey);
@@ -66,6 +68,10 @@ class HiveDBProvider extends ChangeNotifier {
     );
     trackedDayBox = await Hive.openBox(
       trackedDayBoxName,
+      encryptionCipher: encryptionCypher,
+    );
+    weightHistoryBox = await Hive.openBox(
+      weightHistoryBoxName,
       encryptionCipher: encryptionCypher,
     );
   }

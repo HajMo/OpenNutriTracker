@@ -15,6 +15,8 @@ class TrackedDayEntity extends Equatable {
   final double? fatTracked;
   final double? proteinGoal;
   final double? proteinTracked;
+  final double? waterIntakeMl;
+  final double? waterGoalMl;
 
   const TrackedDayEntity({
     required this.day,
@@ -26,6 +28,8 @@ class TrackedDayEntity extends Equatable {
     this.fatTracked,
     this.proteinGoal,
     this.proteinTracked,
+    this.waterIntakeMl,
+    this.waterGoalMl,
   });
 
   factory TrackedDayEntity.fromTrackedDayDBO(TrackedDayDBO trackedDayDBO) {
@@ -39,6 +43,8 @@ class TrackedDayEntity extends Equatable {
       fatTracked: trackedDayDBO.fatTracked,
       proteinGoal: trackedDayDBO.proteinGoal,
       proteinTracked: trackedDayDBO.proteinTracked,
+      waterIntakeMl: trackedDayDBO.waterIntakeMl,
+      waterGoalMl: trackedDayDBO.waterGoalMl,
     );
   }
 

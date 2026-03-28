@@ -4,6 +4,7 @@ import 'package:opennutritracker/core/data/data_source/config_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/intake_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/physical_activity_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/tracked_day_data_source.dart';
+import 'package:opennutritracker/core/data/data_source/weight_history_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/user_activity_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/user_data_source.dart';
 import 'package:opennutritracker/core/data/repository/config_repository.dart';
@@ -87,6 +88,8 @@ Future<void> initLocator() async {
   );
   locator.registerLazySingleton<HomeBloc>(
     () => HomeBloc(
+      locator(),
+      locator(),
       locator(),
       locator(),
       locator(),
@@ -245,6 +248,9 @@ Future<void> initLocator() async {
   locator.registerLazySingleton<SpFdcDataSource>(() => SpFdcDataSource());
   locator.registerLazySingleton(
     () => TrackedDayDataSource(hiveDBProvider.trackedDayBox),
+  );
+  locator.registerLazySingleton(
+    () => WeightHistoryDataSource(hiveDBProvider.weightHistoryBox),
   );
 
   await _initializeConfig(locator());

@@ -26,6 +26,8 @@ class ConfigDBO extends HiveObject {
   double? userProteinGoalPct;
   @HiveField(8)
   double? userFatGoalPct;
+  @HiveField(9)
+  double? waterGoalMl;
 
   ConfigDBO(
     this.hasAcceptedDisclaimer,

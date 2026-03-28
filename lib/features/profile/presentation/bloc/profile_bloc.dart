@@ -9,6 +9,7 @@ import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart'
 import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/utils/calc/bmi_calc.dart';
 import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
+import 'package:opennutritracker/core/data/data_source/weight_history_data_source.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
@@ -57,6 +58,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void updateUser(UserEntity userEntity) async {
     // Update user in DB
     await _addUserUsecase.addUser(userEntity);
+
+    // Record weight history
+    locator<WeightHistoryDataSource>().addEntry(
+      WeightEntry(date: DateTime.now(), weightKg: userEntity.weightKG),
+    );
 
     // Update Tracked Day
     await _updateTrackedDayCalorieGoal(userEntity, DateTime.now());

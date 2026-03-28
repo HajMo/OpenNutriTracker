@@ -101,4 +101,16 @@ class ConfigDataSource {
     final config = _configBox.get(_configKey);
     return config?.hasAcceptedSendAnonymousData ?? false;
   }
+
+  Future<double> getWaterGoalMl() async {
+    final config = _configBox.get(_configKey);
+    return config?.waterGoalMl ?? 2000;
+  }
+
+  Future<void> setConfigWaterGoalMl(double waterGoalMl) async {
+    _log.fine('Updating config waterGoalMl to $waterGoalMl');
+    final config = _configBox.get(_configKey);
+    config?.waterGoalMl = waterGoalMl;
+    config?.save();
+  }
 }

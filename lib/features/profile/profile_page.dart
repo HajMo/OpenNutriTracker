@@ -9,6 +9,7 @@ import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/widgets/bmi_overview.dart';
+import 'package:opennutritracker/features/profile/presentation/widgets/weight_history_widget.dart';
 import 'package:opennutritracker/features/profile/presentation/widgets/set_gender_dialog.dart';
 import 'package:opennutritracker/features/profile/presentation/widgets/set_goal_dialog.dart';
 import 'package:opennutritracker/features/profile/presentation/widgets/set_height_dialog.dart';
@@ -73,7 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
           bmiValue: userBMIEntity.bmiValue,
           nutritionalStatus: userBMIEntity.nutritionalStatus,
         ),
-        const SizedBox(height: 32.0),
+        const SizedBox(height: 16.0),
+        WeightHistoryWidget(usesImperialUnits: usesImperialUnits),
+        const SizedBox(height: 16.0),
         ListTile(
           title: Text(
             S.of(context).activityLabel,

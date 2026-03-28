@@ -14,6 +14,7 @@ import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.da
 import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/dashboard_widget.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/intake_vertical_list.dart';
+import 'package:opennutritracker/features/home/presentation/widgets/water_tracking_widget.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,6 +73,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             state.snackIntakeList,
             state.userActivityList,
             state.usesImperialUnits,
+            state.waterIntakeMl,
+            state.waterGoalMl,
           );
         } else {
           return _getLoadingContent();
@@ -112,6 +115,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     List<IntakeEntity> snackIntakeList,
     List<UserActivityEntity> userActivities,
     bool usesImperialUnits,
+    double waterIntakeMl,
+    double waterGoalMl,
   ) {
     if (showDisclaimerDialog) {
       _showDisclaimerDialog(context);
@@ -131,6 +136,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               totalCarbsGoal: totalCarbsGoal,
               totalFatsGoal: totalFatsGoal,
               totalProteinsGoal: totalProteinsGoal,
+            ),
+            WaterTrackingWidget(
+              waterIntakeMl: waterIntakeMl,
+              waterGoalMl: waterGoalMl,
+              onAddGlass: () {
+                _homeBloc.addWaterIntake(250);
+              },
+              onAddCustom: () {
+                _showCustomWaterDialog(context);
+              },
             ),
             ActivityVerticalList(
               day: DateTime.now(),
@@ -325,6 +340,43 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _homeBloc.add(const LoadItemsEvent());
       }
     });
+  }
+
+  void _showCustomWaterDialog(BuildContext context) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add water"),
+          content: TextField(
+            controller: controller,
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
+            decoration: const InputDecoration(
+              labelText: "Amount (ml)",
+              border: OutlineInputBorder(),
+            ),
+            autofocus: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).dialogCancelLabel),
+            ),
+            FilledButton(
+              onPressed: () {
+                final amount = double.tryParse(controller.text);
+                if (amount != null && amount > 0) {
+                  _homeBloc.addWaterIntake(amount);
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text(S.of(context).addLabel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Refresh page when day changes

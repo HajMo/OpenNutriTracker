@@ -216,4 +216,32 @@ class TrackedDayDataSource {
       updateDay.save();
     }
   }
+
+  Future<void> addWaterIntake(DateTime day, double amountMl) async {
+    log.fine('Adding water intake: $amountMl ml');
+    final updateDay = await getTrackedDay(day);
+    if (updateDay != null) {
+      updateDay.waterIntakeMl = (updateDay.waterIntakeMl ?? 0) + amountMl;
+      updateDay.save();
+    }
+  }
+
+  Future<void> setWaterGoal(DateTime day, double goalMl) async {
+    log.fine('Setting water goal: $goalMl ml');
+    final updateDay = await getTrackedDay(day);
+    if (updateDay != null) {
+      updateDay.waterGoalMl = goalMl;
+      updateDay.save();
+    }
+  }
+
+  Future<double> getWaterIntake(DateTime day) async {
+    final trackedDay = await getTrackedDay(day);
+    return trackedDay?.waterIntakeMl ?? 0;
+  }
+
+  Future<double> getWaterGoal(DateTime day) async {
+    final trackedDay = await getTrackedDay(day);
+    return trackedDay?.waterGoalMl ?? 2000;
+  }
 }

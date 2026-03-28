@@ -425,5 +425,15 @@
   "quickLogDialogTitle": "Add meal entry",
   "quickLogDialogContent": "Quick Log lets you log a one-off meal directly. Custom Meal saves it for reuse.",
   "customMealLabel": "Custom Meal",
-  "quickLogAddedSnackbar": "Quick log added"
+  "quickLogAddedSnackbar": "Quick log added",
+
+  "@WATER_TRACKING": {},
+  "waterLabel": "Water",
+  "waterRemainingLabel": "{amount} ml remaining",
+  "waterGoalReachedLabel": "Goal reached!",
+  "addWaterLabel": "Add water",
+  "waterAmountLabel": "Amount (ml)",
+  "waterGlassLabel": "+250 ml",
+  "waterCustomLabel": "Custom",
+  "waterGoalLabel": "Daily water goal (ml)"
 }

@@ -25,6 +25,10 @@ class TrackedDayDBO extends HiveObject {
   double? proteinGoal;
   @HiveField(8)
   double? proteinTracked;
+  @HiveField(9)
+  double? waterIntakeMl;
+  @HiveField(10)
+  double? waterGoalMl;
 
   TrackedDayDBO({
     required this.day,
@@ -36,6 +40,8 @@ class TrackedDayDBO extends HiveObject {
     this.fatTracked,
     this.proteinGoal,
     this.proteinTracked,
+    this.waterIntakeMl,
+    this.waterGoalMl,
   });
 
   factory TrackedDayDBO.fromTrackedDayEntity(TrackedDayEntity entity) {
@@ -49,6 +55,8 @@ class TrackedDayDBO extends HiveObject {
       fatTracked: entity.fatTracked,
       proteinGoal: entity.proteinGoal,
       proteinTracked: entity.proteinTracked,
+      waterIntakeMl: entity.waterIntakeMl,
+      waterGoalMl: entity.waterGoalMl,
     );
   }
 
