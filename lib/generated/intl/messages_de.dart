@@ -654,6 +654,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsLicensesLabel":
             MessageLookupByLibrary.simpleMessage("Lizenzen"),
         "settingsMassLabel": MessageLookupByLibrary.simpleMessage("Masse"),
+        "settingsMetricLabel":
+            MessageLookupByLibrary.simpleMessage("Metrisch (kg, cm, ml)"),
         "settingsPrivacySettings":
             MessageLookupByLibrary.simpleMessage("Datenschutzeinstellungen"),
         "settingsReportErrorLabel":

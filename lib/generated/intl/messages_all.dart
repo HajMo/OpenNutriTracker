@@ -16,25 +16,37 @@ import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 import 'package:intl/src/intl_helpers.dart';
 
+import 'messages_cz.dart' as messages_cz;
 import 'messages_de.dart' as messages_de;
 import 'messages_en.dart' as messages_en;
+import 'messages_it.dart' as messages_it;
 import 'messages_tr.dart' as messages_tr;
+import 'messages_uk.dart' as messages_uk;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
+  'cz': () => new SynchronousFuture(null),
   'de': () => new SynchronousFuture(null),
   'en': () => new SynchronousFuture(null),
+  'it': () => new SynchronousFuture(null),
   'tr': () => new SynchronousFuture(null),
+  'uk': () => new SynchronousFuture(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
   switch (localeName) {
+    case 'cz':
+      return messages_cz.messages;
     case 'de':
       return messages_de.messages;
     case 'en':
       return messages_en.messages;
+    case 'it':
+      return messages_it.messages;
     case 'tr':
       return messages_tr.messages;
+    case 'uk':
+      return messages_uk.messages;
     default:
       return null;
   }

@@ -11,7 +11,7 @@ import 'package:opennutritracker/features/scanner/data/product_not_found_excepti
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class OFFDataSource {
-  static const _timeoutDuration = Duration(seconds: 20); // TODO lower timeout
+  static const _timeoutDuration = Duration(seconds: 60);
   final log = Logger('OFFDataSource');
 
   Future<OFFWordResponseDTO> fetchSearchWordResults(String searchString) async {
@@ -24,8 +24,9 @@ class OFFDataSource {
           await httpClient.get(searchUrlString).timeout(_timeoutDuration);
       log.fine('Fetching OFF results from: $searchUrlString');
       if (response.statusCode == OFFConst.offHttpSuccessCode) {
-        final wordResponse =
-            OFFWordResponseDTO.fromJson(jsonDecode(response.body));
+        final wordResponse = OFFWordResponseDTO.fromJson(
+          jsonDecode(response.body),
+        );
         log.fine('Successful response from OFF');
         return wordResponse;
       } else {
@@ -49,8 +50,9 @@ class OFFDataSource {
           await httpClient.get(searchUrl).timeout(_timeoutDuration);
       log.fine('Fetching OFF result from: $searchUrl');
       if (response.statusCode == OFFConst.offHttpSuccessCode) {
-        final productResponse =
-            OFFProductResponseDTO.fromJson(jsonDecode(response.body));
+        final productResponse = OFFProductResponseDTO.fromJson(
+          jsonDecode(response.body),
+        );
         log.fine('Successful response from OFF');
         return productResponse;
       } else if (response.statusCode == OFFConst.offProductNotFoundCode) {

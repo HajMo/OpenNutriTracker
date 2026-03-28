@@ -9,13 +9,18 @@ class ProductsRepository {
   final SpFdcDataSource _spBackendDataSource;
 
   ProductsRepository(
-      this._offDataSource, this._fdcDataSource, this._spBackendDataSource);
+    this._offDataSource,
+    this._fdcDataSource,
+    this._spBackendDataSource,
+  );
 
   Future<List<MealEntity>> getOFFProductsByString(String searchString) async {
-    final offWordResponse =
-        await _offDataSource.fetchSearchWordResults(searchString);
+    final offWordResponse = await _offDataSource.fetchSearchWordResults(
+      searchString,
+    );
 
     final products = offWordResponse.products
+        .where((offProduct) => offProduct.nutriments != null)
         .map((offProduct) => MealEntity.fromOFFProduct(offProduct))
         .toList();
 
@@ -23,8 +28,9 @@ class ProductsRepository {
   }
 
   Future<List<MealEntity>> getFDCFoodsByString(String searchString) async {
-    final fdcWordResponse =
-        await _fdcDataSource.fetchSearchWordResults(searchString);
+    final fdcWordResponse = await _fdcDataSource.fetchSearchWordResults(
+      searchString,
+    );
     final products = fdcWordResponse.foods
         .map((food) => MealEntity.fromFDCFood(food))
         .toList();
@@ -32,9 +38,11 @@ class ProductsRepository {
   }
 
   Future<List<MealEntity>> getSupabaseFDCFoodsByString(
-      String searchString) async {
-    final spFdcWordResponse =
-        await _spBackendDataSource.fetchSearchWordResults(searchString);
+    String searchString,
+  ) async {
+    final spFdcWordResponse = await _spBackendDataSource.fetchSearchWordResults(
+      searchString,
+    );
     final products = spFdcWordResponse
         .map((foodItem) => MealEntity.fromSpFDCFood(foodItem))
         .toList();
